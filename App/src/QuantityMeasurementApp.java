@@ -1,13 +1,40 @@
 public class QuantityMeasurementApp {
 
-    // ===== FEET CLASS =====
-    public static class Feet {
-        private final double value;
+    // ===== ENUM FOR UNITS =====
+    public enum LengthUnit {
+        FEET(1.0),
+        INCH(1.0 / 12.0);
 
-        public Feet(double value) {
-            this.value = value;
+        private final double toFeetFactor;
+
+        LengthUnit(double factor) {
+            this.toFeetFactor = factor;
         }
 
+        public double toFeet(double value) {
+            return value * toFeetFactor;
+        }
+    }
+
+    // ===== GENERIC QUANTITY CLASS =====
+    public static class Quantity {
+        private final double value;
+        private final LengthUnit unit;
+
+        public Quantity(double value, LengthUnit unit) {
+            if (unit == null) {
+                throw new IllegalArgumentException("Unit cannot be null");
+            }
+            this.value = value;
+            this.unit = unit;
+        }
+
+        // Convert to base unit (feet)
+        private double toFeet() {
+            return unit.toFeet(value);
+        }
+
+        // Override equals
         @Override
         public boolean equals(Object obj) {
 
@@ -15,51 +42,18 @@ public class QuantityMeasurementApp {
 
             if (obj == null || getClass() != obj.getClass()) return false;
 
-            Feet other = (Feet) obj;
+            Quantity other = (Quantity) obj;
 
-            return Double.compare(this.value, other.value) == 0;
+            return Double.compare(this.toFeet(), other.toFeet()) == 0;
         }
-    }
-
-    // ===== INCH CLASS =====
-    public static class Inch {
-        private final double value;
-
-        public Inch(double value) {
-            this.value = value;
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-
-            if (this == obj) return true;
-
-            if (obj == null || getClass() != obj.getClass()) return false;
-
-            Inch other = (Inch) obj;
-
-            return Double.compare(this.value, other.value) == 0;
-        }
-    }
-
-    // ===== STATIC METHODS =====
-
-    public static boolean compareFeet(double a, double b) {
-        Feet f1 = new Feet(a);
-        Feet f2 = new Feet(b);
-        return f1.equals(f2);
-    }
-
-    public static boolean compareInch(double a, double b) {
-        Inch i1 = new Inch(a);
-        Inch i2 = new Inch(b);
-        return i1.equals(i2);
     }
 
     // ===== MAIN METHOD =====
     public static void main(String[] args) {
 
-        System.out.println("Feet Equality: " + compareFeet(1.0, 1.0));
-        System.out.println("Inch Equality: " + compareInch(1.0, 1.0));
+        Quantity q1 = new Quantity(1.0, LengthUnit.FEET);
+        Quantity q2 = new Quantity(12.0, LengthUnit.INCH);
+
+        System.out.println("Equal: " + q1.equals(q2));
     }
 }
