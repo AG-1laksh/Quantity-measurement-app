@@ -1,45 +1,65 @@
 public class QuantityMeasurementApp {
 
-    // Inner class Feet
+    // ===== FEET CLASS =====
     public static class Feet {
         private final double value;
 
-        // Constructor
         public Feet(double value) {
             this.value = value;
         }
 
-        public double getValue() {
-            return value;
-        }
-
-        // Override equals()
         @Override
         public boolean equals(Object obj) {
 
-            // Same reference
-            if (this == obj) {
-                return true;
-            }
+            if (this == obj) return true;
 
-            // Null or different type
-            if (obj == null || getClass() != obj.getClass()) {
-                return false;
-            }
+            if (obj == null || getClass() != obj.getClass()) return false;
 
-            // Type cast
             Feet other = (Feet) obj;
 
-            // Compare double safely
             return Double.compare(this.value, other.value) == 0;
         }
     }
 
-    // Main method (for manual testing)
-    public static void main(String[] args) {
-        Feet f1 = new Feet(1.0);
-        Feet f2 = new Feet(1.0);
+    // ===== INCH CLASS =====
+    public static class Inch {
+        private final double value;
 
-        System.out.println("Equal: " + f1.equals(f2));
+        public Inch(double value) {
+            this.value = value;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+
+            if (this == obj) return true;
+
+            if (obj == null || getClass() != obj.getClass()) return false;
+
+            Inch other = (Inch) obj;
+
+            return Double.compare(this.value, other.value) == 0;
+        }
+    }
+
+    // ===== STATIC METHODS =====
+
+    public static boolean compareFeet(double a, double b) {
+        Feet f1 = new Feet(a);
+        Feet f2 = new Feet(b);
+        return f1.equals(f2);
+    }
+
+    public static boolean compareInch(double a, double b) {
+        Inch i1 = new Inch(a);
+        Inch i2 = new Inch(b);
+        return i1.equals(i2);
+    }
+
+    // ===== MAIN METHOD =====
+    public static void main(String[] args) {
+
+        System.out.println("Feet Equality: " + compareFeet(1.0, 1.0));
+        System.out.println("Inch Equality: " + compareInch(1.0, 1.0));
     }
 }

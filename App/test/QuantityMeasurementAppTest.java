@@ -3,45 +3,63 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class QuantityMeasurementAppTest {
 
-    // 1. Same value
-    @Test
-    void testEquality_SameValue() {
-        QuantityMeasurementApp.Feet f1 = new QuantityMeasurementApp.Feet(1.0);
-        QuantityMeasurementApp.Feet f2 = new QuantityMeasurementApp.Feet(1.0);
+    // ===== FEET TESTS =====
 
-        assertTrue(f1.equals(f2));
+    @Test
+    void testFeetEquality_SameValue() {
+        assertTrue(QuantityMeasurementApp.compareFeet(1.0, 1.0));
     }
 
-    // 2. Different value
     @Test
-    void testEquality_DifferentValue() {
-        QuantityMeasurementApp.Feet f1 = new QuantityMeasurementApp.Feet(1.0);
-        QuantityMeasurementApp.Feet f2 = new QuantityMeasurementApp.Feet(2.0);
-
-        assertFalse(f1.equals(f2));
+    void testFeetEquality_DifferentValue() {
+        assertFalse(QuantityMeasurementApp.compareFeet(1.0, 2.0));
     }
 
-    // 3. Null comparison
     @Test
-    void testEquality_NullComparison() {
-        QuantityMeasurementApp.Feet f1 = new QuantityMeasurementApp.Feet(1.0);
-
-        assertFalse(f1.equals(null));
+    void testFeetEquality_NullComparison() {
+        QuantityMeasurementApp.Feet f = new QuantityMeasurementApp.Feet(1.0);
+        assertFalse(f.equals(null));
     }
 
-    // 4. Non-numeric input (different type)
     @Test
-    void testEquality_NonNumericInput() {
-        QuantityMeasurementApp.Feet f1 = new QuantityMeasurementApp.Feet(1.0);
-
-        assertFalse(f1.equals("1.0"));
+    void testFeetEquality_NonNumericInput() {
+        QuantityMeasurementApp.Feet f = new QuantityMeasurementApp.Feet(1.0);
+        assertFalse(f.equals("1.0"));
     }
 
-    // 5. Same reference
     @Test
-    void testEquality_SameReference() {
-        QuantityMeasurementApp.Feet f1 = new QuantityMeasurementApp.Feet(1.0);
+    void testFeetEquality_SameReference() {
+        QuantityMeasurementApp.Feet f = new QuantityMeasurementApp.Feet(1.0);
+        assertTrue(f.equals(f));
+    }
 
-        assertTrue(f1.equals(f1));
+    // ===== INCH TESTS =====
+
+    @Test
+    void testInchEquality_SameValue() {
+        assertTrue(QuantityMeasurementApp.compareInch(1.0, 1.0));
+    }
+
+    @Test
+    void testInchEquality_DifferentValue() {
+        assertFalse(QuantityMeasurementApp.compareInch(1.0, 2.0));
+    }
+
+    @Test
+    void testInchEquality_NullComparison() {
+        QuantityMeasurementApp.Inch i = new QuantityMeasurementApp.Inch(1.0);
+        assertFalse(i.equals(null));
+    }
+
+    @Test
+    void testInchEquality_NonNumericInput() {
+        QuantityMeasurementApp.Inch i = new QuantityMeasurementApp.Inch(1.0);
+        assertFalse(i.equals("1.0"));
+    }
+
+    @Test
+    void testInchEquality_SameReference() {
+        QuantityMeasurementApp.Inch i = new QuantityMeasurementApp.Inch(1.0);
+        assertTrue(i.equals(i));
     }
 }
