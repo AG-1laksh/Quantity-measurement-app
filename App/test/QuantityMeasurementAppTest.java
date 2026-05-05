@@ -209,7 +209,7 @@ class QuantityMeasurementAppTest {
     }
 
     @Test
-    void testAddition_Commutativity() {
+    void testAddition_Commutative_FeetTarget() {
         var r1 = QuantityMeasurementApp.Quantity.add(
                 new QuantityMeasurementApp.Quantity(1.0, QuantityMeasurementApp.LengthUnit.FEET),
                 new QuantityMeasurementApp.Quantity(12.0, QuantityMeasurementApp.LengthUnit.INCH),
