@@ -23,30 +23,59 @@ public class QuantityMeasurementApp {
         }
     }
 
-    // ===== CONVERSION METHOD =====
-    public static double convert(double value, LengthUnit source, LengthUnit target) {
+    // ===== QUANTITY CLASS =====
+    public static class Quantity {
+        private final double value;
+        private final LengthUnit unit;
 
-        // Validation
-        if (!Double.isFinite(value)) {
-            throw new IllegalArgumentException("Invalid numeric value");
+        public Quantity(double value, LengthUnit unit) {
+            if (unit == null) {
+                throw new IllegalArgumentException("Unit cannot be null");
+            }
+            if (!Double.isFinite(value)) {
+                throw new IllegalArgumentException("Invalid value");
+            }
+            this.value = value;
+            this.unit = unit;
         }
 
-        if (source == null || target == null) {
-            throw new IllegalArgumentException("Unit cannot be null");
+        public double getValue() {
+            return value;
         }
 
-        // Step 1: convert to base (feet)
-        double valueInFeet = source.toFeet(value);
+        public LengthUnit getUnit() {
+            return unit;
+        }
 
-        // Step 2: convert to target
-        return target.fromFeet(valueInFeet);
+        private double toFeet() {
+            return unit.toFeet(value);
+        }
+
+        // ===== ADD METHOD =====
+        public static Quantity add(Quantity q1, Quantity q2, LengthUnit targetUnit) {
+
+            if (q1 == null || q2 == null || targetUnit == null) {
+                throw new IllegalArgumentException("Invalid input");
+            }
+
+            // Convert both to base (feet)
+            double sumInFeet = q1.toFeet() + q2.toFeet();
+
+            // Convert to target unit
+            double resultValue = targetUnit.fromFeet(sumInFeet);
+
+            return new Quantity(resultValue, targetUnit);
+        }
     }
 
     // ===== MAIN =====
     public static void main(String[] args) {
 
-        System.out.println(convert(1.0, LengthUnit.FEET, LengthUnit.INCH));     // 12
-        System.out.println(convert(3.0, LengthUnit.YARD, LengthUnit.FEET));     // 9
-        System.out.println(convert(36.0, LengthUnit.INCH, LengthUnit.YARD));    // 1
+        Quantity q1 = new Quantity(1.0, LengthUnit.FEET);
+        Quantity q2 = new Quantity(12.0, LengthUnit.INCH);
+
+        Quantity result = Quantity.add(q1, q2, LengthUnit.FEET);
+
+        System.out.println("Result: " + result.getValue() + " " + result.getUnit());
     }
 }
