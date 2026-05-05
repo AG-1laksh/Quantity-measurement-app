@@ -37,7 +37,7 @@ public class QuantityWeight {
 
     // ===== CONVERT =====
     public QuantityWeight convertTo(WeightUnit target) {
-        if (target == null) throw new IllegalArgumentException("Target unit null");
+        if (target == null) throw new IllegalArgumentException("Target unit cannot be null");
 
         double base = this.toBase();
         double result = target.convertFromBaseUnit(base);

@@ -259,7 +259,7 @@ class QuantityTest {
     }
 
     @Test
-    void testAddition_Commutative() {
+    void testAddition_Commutative_YardTarget() {
         var r1 = new Quantity<>(1.0, LengthUnit.FEET)
                 .add(new Quantity<>(12.0, LengthUnit.INCH), LengthUnit.YARD);
 
