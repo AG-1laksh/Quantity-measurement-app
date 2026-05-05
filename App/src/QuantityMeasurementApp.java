@@ -50,20 +50,20 @@ public class QuantityMeasurementApp {
             return unit.toFeet(value);
         }
 
-        // ===== UC7 ADD METHOD (TARGET UNIT) =====
+        // ===== ADD METHOD =====
         public static Quantity add(Quantity q1, Quantity q2, LengthUnit targetUnit) {
 
             if (q1 == null || q2 == null || targetUnit == null) {
                 throw new IllegalArgumentException("Invalid input");
             }
 
-            // Convert both to base unit (feet)
+            // Convert both to base (feet)
             double sumInFeet = q1.toFeet() + q2.toFeet();
 
             // Convert to target unit
-            double result = targetUnit.fromFeet(sumInFeet);
+            double resultValue = targetUnit.fromFeet(sumInFeet);
 
-            return new Quantity(result, targetUnit);
+            return new Quantity(resultValue, targetUnit);
         }
     }
 
