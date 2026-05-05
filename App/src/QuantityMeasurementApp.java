@@ -2,7 +2,6 @@ public class QuantityMeasurementApp {
 
     // ===== ENUM =====
     public enum LengthUnit {
-
         FEET(1.0),
         INCH(1.0 / 12.0),
         YARD(3.0),
@@ -74,8 +73,8 @@ public class QuantityMeasurementApp {
         Quantity q1 = new Quantity(1.0, LengthUnit.FEET);
         Quantity q2 = new Quantity(12.0, LengthUnit.INCH);
 
-        Quantity result = Quantity.add(q1, q2, LengthUnit.FEET);
-
-        System.out.println("Result: " + result.getValue() + " " + result.getUnit());
+        System.out.println(Quantity.add(q1, q2, LengthUnit.FEET).getValue());
+        System.out.println(Quantity.add(q1, q2, LengthUnit.INCH).getValue());
+        System.out.println(Quantity.add(q1, q2, LengthUnit.YARD).getValue());
     }
 }
