@@ -1,52 +1,33 @@
 public class QuantityMeasurementApp {
 
-    // ===== ENUM =====
-    public enum LengthUnit {
-
-        FEET(1.0),
-        INCH(1.0 / 12.0),
-        YARD(3.0),
-        CENTIMETER(0.393701 / 12.0);
-
-        private final double toFeetFactor;
-
-        LengthUnit(double factor) {
-            this.toFeetFactor = factor;
-        }
-
-        public double toFeet(double value) {
-            return value * toFeetFactor;
-        }
-
-        public double fromFeet(double valueInFeet) {
-            return valueInFeet / toFeetFactor;
-        }
+    public static <U extends IMeasurable> void demonstrateEquality(Quantity<U> q1, Quantity<U> q2) {
+        System.out.println("Equal: " + q1.equals(q2));
     }
 
-    // ===== CONVERSION METHOD =====
-    public static double convert(double value, LengthUnit source, LengthUnit target) {
-
-        // Validation
-        if (!Double.isFinite(value)) {
-            throw new IllegalArgumentException("Invalid numeric value");
-        }
-
-        if (source == null || target == null) {
-            throw new IllegalArgumentException("Unit cannot be null");
-        }
-
-        // Step 1: convert to base (feet)
-        double valueInFeet = source.toFeet(value);
-
-        // Step 2: convert to target
-        return target.fromFeet(valueInFeet);
+    public static <U extends IMeasurable> void demonstrateConversion(Quantity<U> q, U target) {
+        System.out.println("Converted: " + q.convertTo(target));
     }
 
-    // ===== MAIN =====
+    public static <U extends IMeasurable> void demonstrateAddition(Quantity<U> q1, Quantity<U> q2, U target) {
+        System.out.println("Sum: " + q1.add(q2, target));
+    }
+
     public static void main(String[] args) {
 
-        System.out.println(convert(1.0, LengthUnit.FEET, LengthUnit.INCH));     // 12
-        System.out.println(convert(3.0, LengthUnit.YARD, LengthUnit.FEET));     // 9
-        System.out.println(convert(36.0, LengthUnit.INCH, LengthUnit.YARD));    // 1
+        // LENGTH
+        Quantity<LengthUnit> l1 = new Quantity<>(1.0, LengthUnit.FEET);
+        Quantity<LengthUnit> l2 = new Quantity<>(12.0, LengthUnit.INCH);
+
+        demonstrateEquality(l1, l2);
+        demonstrateConversion(l1, LengthUnit.INCH);
+        demonstrateAddition(l1, l2, LengthUnit.FEET);
+
+        // WEIGHT
+        Quantity<WeightUnit> w1 = new Quantity<>(1.0, WeightUnit.KILOGRAM);
+        Quantity<WeightUnit> w2 = new Quantity<>(1000.0, WeightUnit.GRAM);
+
+        demonstrateEquality(w1, w2);
+        demonstrateConversion(w1, WeightUnit.GRAM);
+        demonstrateAddition(w1, w2, WeightUnit.KILOGRAM);
     }
 }
