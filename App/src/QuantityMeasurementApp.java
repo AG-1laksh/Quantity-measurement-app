@@ -103,5 +103,15 @@ public class QuantityMeasurementApp {
         System.out.println(Quantity.add(q1, q2, LengthUnit.INCH).getValue());
         System.out.println(Quantity.add(q1, q2, LengthUnit.YARD).getValue());
         System.out.println(q1.equals(q2));
+
+        QuantityWeight w1 = new QuantityWeight(1.0, WeightUnit.KILOGRAM);
+        QuantityWeight w2 = new QuantityWeight(1000.0, WeightUnit.GRAM);
+
+        System.out.println("Equal: " + w1.equals(w2));
+
+        System.out.println("Convert: " + w1.convertTo(WeightUnit.GRAM));
+
+        System.out.println("Add: " +
+                QuantityWeight.add(w1, w2, WeightUnit.KILOGRAM));
     }
 }
