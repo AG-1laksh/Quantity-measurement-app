@@ -6,6 +6,36 @@ class QuantityMeasurementAppTest {
     double EPS = 1e-6;
 
     @Test
+    void testEquality_Refactored() {
+        var q1 = new QuantityMeasurementApp.Quantity(1.0, QuantityMeasurementApp.LengthUnit.FEET);
+        var q2 = new QuantityMeasurementApp.Quantity(12.0, QuantityMeasurementApp.LengthUnit.INCH);
+
+        assertTrue(q1.equals(q2));
+    }
+
+    @Test
+    void testConvertTo() {
+        var q = new QuantityMeasurementApp.Quantity(1.0, QuantityMeasurementApp.LengthUnit.FEET);
+        var result = q.convertTo(QuantityMeasurementApp.LengthUnit.INCH);
+
+        assertEquals(12.0, result.getValue(), EPS);
+    }
+
+    @Test
+    void testNullUnit() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            new QuantityMeasurementApp.Quantity(1.0, null);
+        });
+    }
+
+    @Test
+    void testInvalidValue() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            new QuantityMeasurementApp.Quantity(Double.NaN, QuantityMeasurementApp.LengthUnit.FEET);
+        });
+    }
+
+    @Test
     void testAddition_SameUnit_FeetPlusFeet() {
         var r = QuantityMeasurementApp.Quantity.add(
                 new QuantityMeasurementApp.Quantity(1.0, QuantityMeasurementApp.LengthUnit.FEET),

@@ -50,6 +50,31 @@ public class QuantityMeasurementApp {
             return unit.toFeet(value);
         }
 
+        // ===== EQUALS =====
+        @Override
+        public boolean equals(Object obj) {
+
+            if (this == obj) return true;
+
+            if (obj == null || getClass() != obj.getClass()) return false;
+
+            Quantity other = (Quantity) obj;
+
+            return Double.compare(this.toFeet(), other.toFeet()) == 0;
+        }
+
+        // ===== CONVERT =====
+        public Quantity convertTo(LengthUnit target) {
+            if (target == null) {
+                throw new IllegalArgumentException("Target unit cannot be null");
+            }
+
+            double base = this.toFeet();
+            double result = target.fromFeet(base);
+
+            return new Quantity(result, target);
+        }
+
         // ===== ADD METHOD =====
         public static Quantity add(Quantity q1, Quantity q2, LengthUnit targetUnit) {
 
@@ -73,8 +98,10 @@ public class QuantityMeasurementApp {
         Quantity q1 = new Quantity(1.0, LengthUnit.FEET);
         Quantity q2 = new Quantity(12.0, LengthUnit.INCH);
 
+        System.out.println(q1.convertTo(LengthUnit.INCH).getValue());
         System.out.println(Quantity.add(q1, q2, LengthUnit.FEET).getValue());
         System.out.println(Quantity.add(q1, q2, LengthUnit.INCH).getValue());
         System.out.println(Quantity.add(q1, q2, LengthUnit.YARD).getValue());
+        System.out.println(q1.equals(q2));
     }
 }
