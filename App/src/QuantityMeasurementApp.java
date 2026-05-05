@@ -1,117 +1,33 @@
 public class QuantityMeasurementApp {
 
-    // ===== ENUM =====
-    public enum LengthUnit {
-        FEET(1.0),
-        INCH(1.0 / 12.0),
-        YARD(3.0),
-        CENTIMETER(0.393701 / 12.0);
-
-        private final double toFeetFactor;
-
-        LengthUnit(double factor) {
-            this.toFeetFactor = factor;
-        }
-
-        public double toFeet(double value) {
-            return value * toFeetFactor;
-        }
-
-        public double fromFeet(double valueInFeet) {
-            return valueInFeet / toFeetFactor;
-        }
+    public static <U extends IMeasurable> void demonstrateEquality(Quantity<U> q1, Quantity<U> q2) {
+        System.out.println("Equal: " + q1.equals(q2));
     }
 
-    // ===== QUANTITY CLASS =====
-    public static class Quantity {
-        private final double value;
-        private final LengthUnit unit;
-
-        public Quantity(double value, LengthUnit unit) {
-            if (unit == null) {
-                throw new IllegalArgumentException("Unit cannot be null");
-            }
-            if (!Double.isFinite(value)) {
-                throw new IllegalArgumentException("Invalid value");
-            }
-            this.value = value;
-            this.unit = unit;
-        }
-
-        public double getValue() {
-            return value;
-        }
-
-        public LengthUnit getUnit() {
-            return unit;
-        }
-
-        private double toFeet() {
-            return unit.toFeet(value);
-        }
-
-        // ===== EQUALS =====
-        @Override
-        public boolean equals(Object obj) {
-
-            if (this == obj) return true;
-
-            if (obj == null || getClass() != obj.getClass()) return false;
-
-            Quantity other = (Quantity) obj;
-
-            return Double.compare(this.toFeet(), other.toFeet()) == 0;
-        }
-
-        // ===== CONVERT =====
-        public Quantity convertTo(LengthUnit target) {
-            if (target == null) {
-                throw new IllegalArgumentException("Target unit cannot be null");
-            }
-
-            double base = this.toFeet();
-            double result = target.fromFeet(base);
-
-            return new Quantity(result, target);
-        }
-
-        // ===== ADD METHOD =====
-        public static Quantity add(Quantity q1, Quantity q2, LengthUnit targetUnit) {
-
-            if (q1 == null || q2 == null || targetUnit == null) {
-                throw new IllegalArgumentException("Invalid input");
-            }
-
-            // Convert both to base (feet)
-            double sumInFeet = q1.toFeet() + q2.toFeet();
-
-            // Convert to target unit
-            double resultValue = targetUnit.fromFeet(sumInFeet);
-
-            return new Quantity(resultValue, targetUnit);
-        }
+    public static <U extends IMeasurable> void demonstrateConversion(Quantity<U> q, U target) {
+        System.out.println("Converted: " + q.convertTo(target));
     }
 
-    // ===== MAIN =====
+    public static <U extends IMeasurable> void demonstrateAddition(Quantity<U> q1, Quantity<U> q2, U target) {
+        System.out.println("Sum: " + q1.add(q2, target));
+    }
+
     public static void main(String[] args) {
 
-        Quantity q1 = new Quantity(1.0, LengthUnit.FEET);
-        Quantity q2 = new Quantity(12.0, LengthUnit.INCH);
+        // LENGTH
+        Quantity<LengthUnit> l1 = new Quantity<>(1.0, LengthUnit.FEET);
+        Quantity<LengthUnit> l2 = new Quantity<>(12.0, LengthUnit.INCH);
 
-        System.out.println(q1.convertTo(LengthUnit.INCH).getValue());
-        System.out.println(Quantity.add(q1, q2, LengthUnit.FEET).getValue());
-        System.out.println(Quantity.add(q1, q2, LengthUnit.INCH).getValue());
-        System.out.println(Quantity.add(q1, q2, LengthUnit.YARD).getValue());
-        System.out.println(q1.equals(q2));
+        demonstrateEquality(l1, l2);
+        demonstrateConversion(l1, LengthUnit.INCH);
+        demonstrateAddition(l1, l2, LengthUnit.FEET);
 
-        QuantityWeight w1 = new QuantityWeight(1.0, WeightUnit.KILOGRAM);
-        QuantityWeight w2 = new QuantityWeight(1000.0, WeightUnit.GRAM);
+        // WEIGHT
+        Quantity<WeightUnit> w1 = new Quantity<>(1.0, WeightUnit.KILOGRAM);
+        Quantity<WeightUnit> w2 = new Quantity<>(1000.0, WeightUnit.GRAM);
 
-        System.out.println("Equal: " + w1.equals(w2));
-
-        System.out.println("Convert: " + w1.convertTo(WeightUnit.GRAM));
-
-        System.out.println("Add: " +
-                QuantityWeight.add(w1, w2, WeightUnit.KILOGRAM));
+        demonstrateEquality(w1, w2);
+        demonstrateConversion(w1, WeightUnit.GRAM);
+        demonstrateAddition(w1, w2, WeightUnit.KILOGRAM);
     }
 }
